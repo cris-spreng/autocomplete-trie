@@ -10,7 +10,7 @@
 # FROM node:lts-alpine # for Node.js 12
 # FROM node:10-alpine3.10 # for Node.js 10
 # or any other listed here https://hub.docker.com/_/node/
-FROM node:current-alpine
+FROM node:lts-alpine
 
 # Directory inside the container where your app code will live.
 # You probably won't need to change this
@@ -55,4 +55,4 @@ COPY . .
 # you might want to run our app are:
 # CMD [ "npm", "run", "start" ]
 # CMD [ "yarn", "start" ]
-CMD [ "node", "index.js" ]
+CMD [ "npm", "start" ]
