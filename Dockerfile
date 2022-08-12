@@ -10,7 +10,7 @@
 # FROM node:lts-alpine # for Node.js 12
 # FROM node:10-alpine3.10 # for Node.js 10
 # or any other listed here https://hub.docker.com/_/node/
-FROM node:lts-alpine
+FROM node:16
 
 # Directory inside the container where your app code will live.
 # You probably won't need to change this

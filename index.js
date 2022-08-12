@@ -29,13 +29,13 @@ app.use(express.json());
 
 // GET REQUESTS
 app.get("/typeahead/:prefix", (req, res) => {
-	console.log(req.params.prefix);
+//	console.log(req.params.prefix);
 	res.setHeader('content-type', 'application/json; charset=utf-8');
 	res.send('\n'+JSON.stringify(Trie.findName(req.params.prefix.toLowerCase(),SUGGESTION_NUMBER))+'\n\n');
 
 });
 app.get("/typeahead/", (req, res) => {
-	console.log(req.body);
+//	console.log(req.body);
 	res.setHeader('content-type', 'application/json; charset=utf-8');
 	res.send('\n'+JSON.stringify(Trie.findName("",SUGGESTION_NUMBER))+'\n\n')
 
@@ -43,15 +43,18 @@ app.get("/typeahead/", (req, res) => {
 
 //POSTS REQUESTS
 app.post('/typeahead/', (req,res) => {
-	console.log(req.body.name);
-	query = req.body.name.toLowerCase();
-	if(score = Trie.exists(query)){
-		Trie.insert(query,score+1);
-		res.status(201).send('\n'+`{"name":"${capitalize(query)}","times":${score+1}}`+'\n\n')
+	if(req.body.name){
+		query = req.body.name.toLowerCase();
+		if(score = Trie.exists(query)){
+			console.log("POST:",query);
+			Trie.insert(query,score+1);
+			res.status(201).send('\n'+`{"name":"${capitalize(query)}","times":${score+1}}`+'\n\n')
+		}else{
+			res.status(400).send('\nNot Found\n\n')
+		}
 	}else{
 		res.status(400).send('\nNot Found\n\n')
 	}
-	
 });
 
 app.listen(PORT, HOST, () => {
