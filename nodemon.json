@@ -1,0 +1,5 @@
+{
+    "watch":[
+        ".env", ".js", ".html", "index.js","lib/trie.js","lib/capitalize.js"
+    ]
+}
