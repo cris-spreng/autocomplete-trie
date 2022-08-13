@@ -1,5 +1,5 @@
-.nodemon.json
-.DS_Stotes
+nodemon.json
+.DS_Stores
 main.test.js
 
 # Logs
