@@ -30,7 +30,7 @@ app.use(express.json(strict = true));
 app.use((err, req, res, next) => {
 	if(err instanceof SyntaxError){
 		res.setHeader('content-type', 'application/json; charset=utf-8');
-		return res.status(400).send('\nBad Request\n\n');
+		return res.status(400).send(JSON.parse('{"message":"Bad Request"}'));
 	}
 	next();
 });
@@ -45,11 +45,11 @@ app.get("/typeahead/:prefix", (req, res) => {
 		response.splice(index+1,1);
 	}
 	res.setHeader('content-type', 'application/json; charset=utf-8');
-	res.send('\n'+JSON.stringify(response)+'\n\n');
+	res.status(200).send(response);
 });
 app.get("/typeahead/", (req, res) => {
 	res.setHeader('content-type', 'application/json; charset=utf-8');
-	res.send('\n'+JSON.stringify(Trie.findName("",SUGGESTION_NUMBER))+'\n\n')
+	res.status(200).send(Trie.findName("",SUGGESTION_NUMBER))
 
 });
 
@@ -63,11 +63,11 @@ app.post('/typeahead/', (req,res) => {
 			res.status(201).send(JSON.parse(`{"name":"${capitalize(query)}","times":${score+1}}`))
 		}else{
 			res.setHeader('content-type', 'application/json; charset=utf-8');
-			res.status(400).send('\nNot Found\n\n')
+			res.status(400).send(JSON.parse('{"message":"Not Found"}'))
 		}
 	}else{
 		res.setHeader('content-type', 'application/json; charset=utf-8');
-		res.status(400).send('\nNot Found\n\n')
+		res.status(400).send(JSON.parse('{"message":"Bad Request"}'))
 	}
 });
 

@@ -1,5 +1,5 @@
 nodemon.json
-.DS_Stores
+.DS_Store
 main.test.js
 
 # Logs

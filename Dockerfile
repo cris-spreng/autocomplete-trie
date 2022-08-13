@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 # This will export the PORT environment variable to your application.
 # It has 12345 as default value, but when running the container we might pass
 # any other port. You shouldn't change this unless you really know what you are doing.
-ENV PORT 12345
+ENV PORT 8000
 
 # This will export the SUGGESTION_NUMBER environment variable to your application.
 # It has 10 as default value, but when running the container we might pass
