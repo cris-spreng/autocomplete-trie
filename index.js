@@ -1,12 +1,10 @@
 /* Librerias */
 const express = require("express");
 const app = express();
-//const http = require('http');
 const fs = require("fs");
 const dotenv = require('dotenv').config();
 const t = require('./lib/trie');
 const {capitalize} = require('./lib/capitalize');
-const { response } = require("express");
 
 /* Declaracion de constantes */
 const PORT = parseInt(process.env.PORT) || 8000;
@@ -49,7 +47,8 @@ app.get("/typeahead/:prefix", (req, res) => {
 });
 app.get("/typeahead/", (req, res) => {
 	res.setHeader('content-type', 'application/json; charset=utf-8');
-	res.status(200).send(Trie.findName("",SUGGESTION_NUMBER))
+	let response = Trie.findName("",SUGGESTION_NUMBER);
+	res.status(200).send(response);
 
 });
 
