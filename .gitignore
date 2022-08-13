@@ -1,5 +1,6 @@
 .nodemon.json
-.DS_Store
+.DS_Stotes
+main.test.js
 
 # Logs
 logs

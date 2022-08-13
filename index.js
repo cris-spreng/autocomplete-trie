@@ -6,6 +6,7 @@ const fs = require("fs");
 const dotenv = require('dotenv').config();
 const t = require('./lib/trie');
 const {capitalize} = require('./lib/capitalize');
+const { response } = require("express");
 
 /* Declaracion de constantes */
 const PORT = parseInt(process.env.PORT) || 8000;
@@ -25,17 +26,28 @@ for(item in data){
 }
 
 /* Middlewares! */
-app.use(express.json());
+app.use(express.json(strict = true));
+app.use((err, req, res, next) => {
+	if(err instanceof SyntaxError){
+		res.setHeader('content-type', 'application/json; charset=utf-8');
+		return res.status(400).send('\nBad Request\n\n');
+	}
+	next();
+});
 
-// GET REQUESTS
+// GET Requests
 app.get("/typeahead/:prefix", (req, res) => {
-//	console.log(req.params.prefix);
+	let query = req.params.prefix.toLowerCase();
+	let response = Trie.findName(query,SUGGESTION_NUMBER);
+	if(Trie.exists(query)){
+		index = response.findIndex(el => el.name == capitalize(query));
+		response.unshift(response[index]);
+		response.splice(index+1,1);
+	}
 	res.setHeader('content-type', 'application/json; charset=utf-8');
-	res.send('\n'+JSON.stringify(Trie.findName(req.params.prefix.toLowerCase(),SUGGESTION_NUMBER))+'\n\n');
-
+	res.send('\n'+JSON.stringify(response)+'\n\n');
 });
 app.get("/typeahead/", (req, res) => {
-//	console.log(req.body);
 	res.setHeader('content-type', 'application/json; charset=utf-8');
 	res.send('\n'+JSON.stringify(Trie.findName("",SUGGESTION_NUMBER))+'\n\n')
 
@@ -43,16 +55,18 @@ app.get("/typeahead/", (req, res) => {
 
 //POSTS REQUESTS
 app.post('/typeahead/', (req,res) => {
-	if(req.body.name){
+  	if(req.body.name){
 		query = req.body.name.toLowerCase();
 		if(score = Trie.exists(query)){
-			console.log("POST:",query);
 			Trie.insert(query,score+1);
-			res.status(201).send('\n'+`{"name":"${capitalize(query)}","times":${score+1}}`+'\n\n')
+			res.setHeader('content-type', 'application/json; charset=utf-8');
+			res.status(201).send(JSON.parse(`{"name":"${capitalize(query)}","times":${score+1}}`))
 		}else{
+			res.setHeader('content-type', 'application/json; charset=utf-8');
 			res.status(400).send('\nNot Found\n\n')
 		}
 	}else{
+		res.setHeader('content-type', 'application/json; charset=utf-8');
 		res.status(400).send('\nNot Found\n\n')
 	}
 });
