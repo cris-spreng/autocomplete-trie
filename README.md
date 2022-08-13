@@ -63,7 +63,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"name": "Pablov"}' http:
 {"message":"Not Found"}
 ```
 
-### 5. Performance
+### Performance
 
 For better performance the data is stored and delivered using a **prefix tree** (also known as Trie).
 
